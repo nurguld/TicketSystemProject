@@ -1,0 +1,67 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="d-flex justify-content-center align-items-center"
+     style="min-height: 75vh;">
+
+    <div class="card shadow p-4"
+         style="width: 400px; border-radius:15px;">
+
+        <h3 class="text-center mb-4"
+            style="color:#286398; font-weight:600;">
+            Login
+        </h3>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger text-center mb-3" style="border-radius: 8px; font-size: 0.9rem;">
+                @ViewBag.Error
+            </div>
+        }
+
+
+        <form asp-controller="Account" asp-action="Login" method="post">
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email"
+                       name="Email"
+                       class="form-control"
+                       placeholder="Enter your email"
+                       required />
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Password</label>
+                <input type="password"
+                       name="Password"
+                       class="form-control"
+                       placeholder="Enter your password"
+                       required />
+            </div>
+
+            <div class="d-grid mb-3">
+                <button type="submit"
+                        class="btn text-white"
+                        style="background-color:#286398; border-radius:8px;">
+                    Login
+                </button>
+            </div>
+
+        </form>
+
+        <div class="text-center">
+            <span class="text-muted">
+                Don't have an account?
+            </span>
+            <a asp-controller="Account"
+               asp-action="Register"
+               style="color:#286398; font-weight:500; text-decoration:none;">
+                Register
+            </a>
+        </div>
+
+    </div>
+
+</div>

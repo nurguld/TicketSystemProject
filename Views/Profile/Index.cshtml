@@ -1,0 +1,176 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model TicketSystemProject.ViewModels.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<style>
+    .profile-card {
+        border-radius: 18px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: 0.3s ease;
+    }
+
+        .profile-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+        }
+
+    .danger-zone {
+        border: 2px dashed #dc3545;
+        border-radius: 18px;
+        padding: 20px;
+    }
+</style>
+
+<div class="container mt-4">
+
+    ```
+    <h2 class="mb-4">
+        Hoşgeldin, @Model.Name 👋
+    </h2>
+
+    <div class="row g-4">
+
+        <!-- PROFİL BİLGİLERİ -->
+        <div class="col-md-6">
+            <div class="card profile-card p-4">
+                <h4 class="mb-3">👤 Profil Bilgileri</h4>
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <form asp-controller="Profile"
+                      asp-action="UpdateProfile"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label class="form-label">Ad Soyad</label>
+                        <input asp-for="Name" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Kullanıcı Adı</label>
+                        <input asp-for="UserName" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input asp-for="Email" class="form-control" readonly />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        UPDATE
+                    </button>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- ŞİFRE DEĞİŞTİR -->
+        <div class="col-md-6">
+            <div class="card profile-card p-4">
+                <h4 class="mb-3">🔐 Şifre Değiştir</h4>
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger">@Html.Raw(TempData["ErrorMessage"])</div>
+                }
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+                }
+                <form asp-controller="Profile"
+                      asp-action="ChangePassword"
+                      method="post">
+                      
+                    <div class="mb-3">
+                        <input name="OldPassword" type="password" class="form-control" placeholder="Eski Şifre" />
+                    </div>
+
+                    <div class="mb-3">
+                        <input name="NewPassword" type="password" class="form-control" placeholder="Yeni Şifre" />
+                    </div>
+
+                    <div class="mb-3">
+                        <input name="ConfirmPassword" type="password" class="form-control" placeholder="Yeni Şifre Tekrar" />
+                    </div>
+
+                    <button type="submit" class="btn btn-warning w-100">
+                        Şifreyi Güncelle
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- HESAP SİL -->
+        <div class="col-12">
+            <div class="card profile-card p-4 danger-zone">
+                <h4 class="text-danger mb-3">⚠️ Hesap Yönetimi</h4>
+
+                <p>Hesabınızı kalıcı olarak silmek için aşağıdaki butona tıklayın.</p>
+
+                <button class="btn btn-danger"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteModal">
+                    Hesabı Sil
+                </button>
+            </div>
+        </div>
+
+    </div>
+    ```
+
+</div>
+
+<!-- DELETE MODAL -->
+
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            ```
+            <form asp-action="DeleteAccount" method="post">
+
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">
+                        Hesabı Sil
+                    </h5>
+                </div>
+
+                <div class="modal-body">
+
+                    <p>
+                        Hesabınızı silmek için şifrenizi girin ve <b>DELETE</b> yazın.
+                    </p>
+
+                    <input name="Password"
+                           type="password"
+                           class="form-control mb-3"
+                           placeholder="Şifre" />
+
+                    <input name="ConfirmText"
+                           class="form-control"
+                           placeholder="DELETE yazınız" />
+
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        Vazgeç
+                    </button>
+
+                    <button class="btn btn-danger">
+                        Hesabı Kalıcı Sil
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+    ```
+
+</div>

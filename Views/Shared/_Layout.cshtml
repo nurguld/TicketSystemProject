@@ -1,0 +1,178 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbarFont {
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: aliceblue;
+        }
+
+        /* NAVBAR BUTTON HOVER SYSTEM */
+        .nav-btn {
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+            .nav-btn:hover {
+                transform: scale(1.08);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            }
+
+            .nav-btn:active {
+                transform: scale(0.95);
+            }
+
+        /* ACCOUNT BADGE */
+        .account-badge {
+            background-color: #ffffff;
+            color: #286398;
+            border-radius: 20px;
+            padding: 6px 16px;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: 0.25s ease;
+        }
+
+        .account-btn {
+            text-decoration: none;
+        }
+
+            .account-btn:hover .account-badge {
+                background-color: #e9ecef;
+            }
+    </style>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ticket System</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/TicketSystem.styles.css" asp-append-version="true" />
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+    <header>
+        <nav class="navbar navbar-expand-sm border-bottom box-shadow"
+             style="background-color:#286398;">
+
+            <div class="container-fluid">
+
+                <a class="navbar-brand text-white fw-bold d-flex align-items-center"
+                   style="font-size:30px; line-height:1.1; padding:5px;"
+                   asp-controller="Home" asp-action="Index">
+
+                    <img src="~/images/logo.png" alt="Logo"
+                         style="height:80px; margin-right:10px;" />
+
+                    <div>
+                        TICKET <br />
+                        SYSTEM
+                    </div>
+                </a>
+
+                <button class="navbar-toggler" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+
+                    <ul class="navbar-nav align-items-center">
+
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item me-3">
+                                <a class="btn nav-btn px-4 py-2 fw-semibold text-white"
+                                   style="background-color:#8A8DA9; font-size:18px; border-radius:10px;"
+                                   asp-controller="Ticket" asp-action="Index">
+                                    Tickets
+                                </a>
+                            </li>
+
+                            <li class="nav-item me-3">
+                                <a class="btn nav-btn px-4 py-2 fw-semibold text-white"
+                                   style="background-color:#8A8DA9; font-size:18px; border-radius:10px;"
+                                   asp-controller="Account" asp-action="Login">
+                                    Login
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <!-- ACCOUNT PROFILE BUTTON -->
+                            <li class="nav-item me-3 d-flex align-items-center">
+                                <a class="account-btn nav-btn d-flex align-items-center"
+                                   asp-controller="Profile"
+                                   asp-action="Index">
+
+                                    <span class="account-badge">
+                                        @User.Identity.Name.ToUpper()
+                                    </span>
+
+                                </a>
+                            </li>
+
+                            <li class="nav-item me-3">
+                                <a class="btn nav-btn px-4 py-2 fw-semibold text-white"
+                                   style="background-color:#8A8DA9; font-size:18px; border-radius:10px;"
+                                   asp-controller="Ticket" asp-action="Index">
+                                    My Tickets
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="btn nav-btn px-4 py-2 fw-semibold text-white"
+                                   style="background-color:#dc3545; font-size:18px; border-radius:10px;"
+                                   asp-controller="Account" asp-action="Logout">
+                                    Logout
+                                </a>
+                            </li>
+                        }
+
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container flex-grow-1 mt-3">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="mt-auto py-3"
+            style="background-color:#286398; color:white;">
+        <div class="container text-center">
+            © 2026 - TicketSystem |
+            <a asp-area="" asp-controller="Home" asp-action="Privacy"
+               style="color:white; text-decoration:underline;">
+                Privacy Policy
+            </a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
